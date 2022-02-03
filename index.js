@@ -97,6 +97,7 @@ async function main(message) {
     let player2 = getRandomChampion(player2Champions);
     clearInterval(loadingBar);
     messageRef.edit(`GhostHunt3r101: ${player1}\nVERSUS\nPragma0nce: ${player2}`)
+    message.channel.send("██████████████████████████████████\n")
 }
 
 function postionStringValue(arr1) {
@@ -117,11 +118,13 @@ async function loadingFlair(message) {
     messageRef = await message.channel.send("Warming up...")
     let index = 0;
     loadingBar = setInterval(() => {
-        if (index == pacman.lanes.length-1)
+        if (index == pacman.lanes.length-1) {
+            messageRef.edit(pacman.lanes[index]);
             index = 0;
+        }
         messageRef.edit(pacman.lanes[index]);
         index++;
-    }, 1000);
+    }, 1500);
 }
 
 client.on('ready', (message) => {
@@ -145,7 +148,7 @@ client.on('message', (message) => {
             randomLanePosition = position[Object.keys(position)[laneIndex]];
         }
         message.channel.send("Welcome Challengers! draw commencing...")
-        message.channel.send("Champion Lane: " + postionStringValue(randomLanePosition) +"\n=========================\n")
+        message.channel.send("Champion Lane: " + postionStringValue(randomLanePosition) +"\n██████████████████████████████████\n")
         
         loadingFlair(message);
 
