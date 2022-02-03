@@ -13,7 +13,8 @@ let position = {
     JUNGLE: ['Fighter', 'Tank']
 }
 let exclusionList = ["Blitzcrank"]
-
+let messageRef = null;
+let loadingBar = null
 var laneIndex = null
 var randomLanePosition = null;
 let player1Champions = null;
@@ -87,7 +88,10 @@ async function main(message) {
         delete position[Object.keys(position)[laneIndex]]
         main();
     }
-    message.channel.send(`GhostHunt3r101: ${getRandomChampion(player1Champions)}\nVERSUS\nPragma0nce: ${getRandomChampion(player2Champions)}`)
+    let player1 = getRandomChampion(player1Champions);
+    let player2 = getRandomChampion(player2Champions);
+    clearInterval(loadingBar);
+    messageRef.edit(`GhostHunt3r101: ${player1}\nVERSUS\nPragma0nce: ${player2}`)
 }
 
 function postionStringValue(arr1) {
@@ -102,6 +106,21 @@ function postionStringValue(arr1) {
         case JSON.stringify(['Fighter', 'Tank']):
             return "JUNGLE"
     }
+}
+
+async function loadingFlair(message) {
+    messageRef = await message.channel.send("Loading.")
+    let i = 1
+    loadingBar = setInterval(() => {
+        let modify = ""
+        if (i == 7)
+            i = 0
+        for (x = 0; x < i; x++) {
+            modify = modify.concat(".")
+        }
+        messageRef.edit("Loading.".concat(modify))
+        i++;
+    }, 1000);
 }
 
 client.on('ready', (message) => {
@@ -126,6 +145,9 @@ client.on('message', (message) => {
         }
         message.channel.send("Welcome Challengers! draw commencing...")
         message.channel.send("Champion Lane: " + postionStringValue(randomLanePosition) +"\n=========================\n")
+        
+        loadingFlair(message);
+
         main(message);
     }
 })
