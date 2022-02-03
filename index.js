@@ -1,6 +1,7 @@
 var axios = require('axios');
 const Discord = require('discord.js');
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
+var config = require('./config.json');
 
 
 
@@ -129,7 +130,7 @@ client.on('message', (message) => {
     }
 })
 
-client.login('OTM4MTM0MDQ5NTM5NjI0OTkw.Yfl3aw.BGwth741CuprLITHkxQ80RT5Ubw');
+client.login(config.token);
 
 
 
