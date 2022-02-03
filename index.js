@@ -2,6 +2,7 @@ var axios = require('axios');
 const Discord = require('discord.js');
 const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
 var config = require('./config.json');
+const pacman = require('./loading-ascii');
 
 
 
@@ -60,6 +61,9 @@ async function getChampionDetails(champion) {
             console.log(index)
             console.log(randomLanePosition)
             randomLanePosition.forEach((element) => {championList[index].tags.includes(element) ? isLaneFound = true : null})
+            if (postionStringValue(randomLanePosition) == "BOT" && (championList[index].tags[0] != "Marksman" || (championList[index].tags[1] && championList[index].tags[1] != "Marksman")) ) {
+                continue;
+            }
             if ((championList[index].tags[0] != "Support") && isLaneFound) {
                 console.log('PASS');
                 return { 
@@ -67,6 +71,7 @@ async function getChampionDetails(champion) {
                     championTags: championList[index].tags
                 }
             }
+        
         }
     }
 
@@ -109,17 +114,13 @@ function postionStringValue(arr1) {
 }
 
 async function loadingFlair(message) {
-    messageRef = await message.channel.send("Loading.")
-    let i = 1
+    messageRef = await message.channel.send("Warming up...")
+    let index = 0;
     loadingBar = setInterval(() => {
-        let modify = ""
-        if (i == 7)
-            i = 0
-        for (x = 0; x < i; x++) {
-            modify = modify.concat(".")
-        }
-        messageRef.edit("Loading.".concat(modify))
-        i++;
+        if (index == pacman.lanes.length-1)
+            index = 0;
+        messageRef.edit(pacman.lanes[index]);
+        index++;
     }, 1000);
 }
 
